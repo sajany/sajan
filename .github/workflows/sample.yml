@@ -50,7 +50,7 @@ jobs:
          #install PIP
          python -m pip install --upgrade pip
          #install all dependencies as defined by requirements.txt in the current directory
-         pip3 install -r requirements.txt -t .
+         #pip3 install -r requirements.txt -t .
          #for installing invidividual modules
          #pip3 install Flask -t .
          #zip files into current directory
