@@ -9,21 +9,36 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x]
     steps:
-      - uses: actions/checkout@master
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          python-version: '3.7'
+
+    #credentials to connect to AWS
+    - name: Configure AWS credentials from Production account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        args: deploy
+      env:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+        profile_name: default
+        project_name: serverless
+        runtime: python3.7
       - name: Install Dependencies
-        run: npm install
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        run: npm ci
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+          args: deploy 
       - name: Serverless Deploy
         run: npm run-script deploy
-        #finish
+            #Deploy main.py to AWS
+      - name: AWS Lambda Deploy
+        uses: appleboy/lambda-action@v0.0.4
+        with:
+    #name of my AWS Lambda Function
+      function_name: gittolambda
+    #contains all the files in my github repository
+      zip_file: gittolambda.zip
