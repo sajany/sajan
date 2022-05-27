@@ -26,4 +26,3 @@ jobs:
       - name: Serverless Deploy
         run: npm run-script deploy
         #finish
-        #exit
