@@ -17,6 +17,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
+      - run: npm ci
+      - name: serverless deploy
+        uses: serverless/github-action@v3
+        with:
+          args: deploy
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
