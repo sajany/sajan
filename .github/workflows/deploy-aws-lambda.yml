@@ -25,3 +25,4 @@ jobs:
           aws-region: eu-central-1
       - name: Serverless Deploy
         run: npm run-script deploy
+        #finish
