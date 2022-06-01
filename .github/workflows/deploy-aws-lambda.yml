@@ -26,3 +26,4 @@ jobs:
       - name: Deploy lambda functions
         run: sls deploy
         #finish
+        #exit
