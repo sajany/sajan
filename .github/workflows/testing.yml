@@ -1,0 +1,32 @@
+name: Ezcloud HACOV CI
+
+on:
+ push:
+   branches:
+     - main
+
+jobs:
+ Deploy:
+   runs-on: ubuntu-latest
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+
+     - name: Setup node
+       uses: actions/setup-node@v2
+
+     - name: Install dependencies
+       run: npm install
+       continue-on-error: true
+     - name: Build static file
+       run: npm run build
+       continue-on-error: true
+     - name: Configure AWS Credentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_HACOV }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_HACOV }}
+         aws-region: us-east-1
+
+     - name: Deploy static site to S3 bucket
+       run: aws s3 sync ./dist/ s3://ezcloudfe
